@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "/home/qadroid/Documents/PlatformIO/Projects/AlarmClock/.pio/libdeps/uno/DHT Sensors Non-Blocking"
+    "cmake.sourceDirectory": "/home/qadroid/Documents/PlatformIO/Projects/AlarmClock/.pio/libdeps/uno/DHT Sensors Non-Blocking",
+    "cmake.configureOnOpen": true
 }

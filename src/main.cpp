@@ -12,7 +12,7 @@
  */
 
 /**
- * A lot of this code is borrowed and modified from examples and other projects.
+ * A lot of this code could be borrowed and modified from examples and other projects.
 */
 
 // ----------------------------
@@ -21,7 +21,6 @@
 #include "RTClib.h"
 #include "Wire.h"
 #include "LiquidCrystal.h"
-#include "DHT_U.h"
 #include "SPI.h"
 #include "Tone.h"
 #include "IRremote.hpp"
@@ -29,37 +28,40 @@
 #include "TempSensor.h"
 #include "LEDRow.h"
 #include "DHTReader.h"
-#define buzzer 6
+#include "Adafruit_Sensor.h"
+#include "DHT.h"
+#include "DHT_U.h"
 // ----------------------------
 
 // ----------------------------
+// DHT setup
+#define DHTPIN 1
+#define DHTTYPE DHT11
+
+DHT_Unified dht(DHTPIN, DHTTYPE);
+// ----------------------------
+
+// ----------------------------
+// Alarm setup
+
 // Defining units of time as well as timer length
 int second = 1000;
 int minute = 60 * second;
 int hour = 60 * minute;
 int alarmTimeRemaining = 8.5 * hour;
-// ----------------------------
 
-// ----------------------------
-// Setting lock values to be switched later
+// Alarm status 'switches'
 int alarmActive = 0;
 int alarmRinging = 0;
 int alarmStopped = 1;
-// ----------------------------
 
-// ----------------------------
-// Alarm buttons
+// Alarm button setup
 int stopButton = 7;
 int resetButton = 2;
 // ----------------------------
 
 // ----------------------------
-// DHT sensor setup
-int DHT_SENSOR_PIN = 1;
-// ----------------------------
-
-// ----------------------------
-// IR sensor setup
+// IR sensor setup (Not yet implemented)
 int IR_SENSOR_PIN = 0;
 // ----------------------------
 
@@ -71,6 +73,9 @@ LiquidCrystal lcd(8, 9, 10, 11, 12, 13);
 
 // ----------------------------
 // Buzzer setup
+#define buzzer 6
+
+// Melody setup
 int melody[] = {
   NOTE_C5, NOTE_D5, NOTE_E5, NOTE_F5, NOTE_G5, NOTE_A5, NOTE_B5, NOTE_C6};
 int duration = 500;  // 500 miliseconds
@@ -93,58 +98,15 @@ void updateShiftRegister()
 }
 // ----------------------------
 
-// The purpose of this function is to type out the early text and call the next functions for temp and timing.
-// ----------------------------
-void displayTimer()
-{
-  lcd.setCursor(0, 0);
-  lcd.print("Temp:");
-  lcd.setCursor(5, 0);
-  // Implement temp sensor here later
-  // Enter code here:
-  
-  lcd.setCursor(0, 1);
-  lcd.print("Time left:");
-  lcd.setCursor(10, 1);
 
-  // Calculating time remaining
-  char timeRemaining[] = "08:30";
 
-  // Calculating hours remaining
-  char hoursRemaining = alarmTimeRemaining / 60 * minute;
-
-  // Applying hours to result
-  if (alarmTimeRemaining >= 60 * minute) 
-  {
-    timeRemaining[1] = hoursRemaining;
-  } else {
-    timeRemaining[1] = '0';
-  }
-
-  // Calculating minutes remaining
-  int minutesRemaining = alarmTimeRemaining / 60 * second;
-
-  // Applying minutes to result
-  if (alarmTimeRemaining >= 10 * minute) 
-  {
-    timeRemaining[3,4] = minutesRemaining;
-  } else { 
-    timeRemaining[4] = minutesRemaining;
-  }
-
-  // Print the result
-  lcd.print(timeRemaining);
-}
-// ----------------------------
-
-// ----------------------------
 void setup()
 {
 
-  // This part is for the LED row
-  pinMode(latchPin, OUTPUT);
+  // This part is for the LED row (can be ignored)
+/*   pinMode(latchPin, OUTPUT);
   pinMode(dataPin, OUTPUT);  
-  pinMode(clockPin, OUTPUT);
+  pinMode(clockPin, OUTPUT); */
 
   // This part is for the buttons
   pinMode(stopButton, INPUT_PULLUP);
@@ -156,15 +118,22 @@ void setup()
 
   // Initialize lcd 
   lcd.begin(16, 2);
-}
-// ----------------------------
 
-// ----------------------------
+  // Initialize DHT sensor
+  Serial.begin(9600);
+  // Initialize device.
+  dht.begin();
+  // Print temperature sensor details.
+  
+}
+
+
+
 void loop() 
 {
   displayTemp();
-  displayTempTimer();
-  delay(1000);
+  displayTimer();
+  delay(2500);
   if (digitalRead(resetButton) == LOW) 
   {
     if (alarmActive = 0)
@@ -179,9 +148,10 @@ void loop()
 
   while (alarmActive == 1 && alarmTimeRemaining > 0) 
   {
-    alarmTimeRemaining = alarmTimeRemaining - 1000;
-    displayTempTimer();
-    delay(1000);
+    alarmTimeRemaining = alarmTimeRemaining - 2500;
+    displayTemp();
+    displayTimer();
+    delay(2500);
     if (alarmTimeRemaining == 0) 
     {
       alarmRinging = 1;
@@ -203,7 +173,7 @@ void loop()
       }
     }
   }
-  
+  Serial.println("Loop ended");
 }
-// ----------------------------
+
 

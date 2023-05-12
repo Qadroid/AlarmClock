@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="(empty)"
+	BuildStamp="20230511-0602-Experimental"
+	Name="(empty)"
+	Generator="ctest-3.26.3"
+	CompilerName=""
+	CompilerVersion=""
+	OSName="Linux"
+	Hostname="obelisk"
+	OSRelease="6.3.1-zen1-1-zen"
+	OSVersion="#1 ZEN SMP PREEMPT_DYNAMIC Mon, 01 May 2023 17:42:12 +0000"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="AuthenticAMD"
+	VendorID="Advanced Micro Devices"
+	FamilyID="25"
+	ModelID="33"
+	ProcessorCacheSize="512"
+	NumberOfLogicalCPU="12"
+	NumberOfPhysicalCPU="6"
+	TotalVirtualMemory="34814"
+	TotalPhysicalMemory="32013"
+	LogicalProcessorsPerPhysical="2"
+	ProcessorClockFrequency="4160.66"
+	>
+	<Testing>
+		<StartDateTime>May 11 07:02 BST</StartDateTime>
+		<StartTestTime>1683784972</StartTestTime>
+		<TestList/>
+		<EndDateTime>May 11 07:02 BST</EndDateTime>
+		<EndTestTime>1683784972</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>
